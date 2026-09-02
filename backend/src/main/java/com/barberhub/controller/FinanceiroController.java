@@ -9,6 +9,7 @@ import com.barberhub.repository.ClienteRepository;
 import com.barberhub.repository.FinanceiroRepository;
 import com.barberhub.repository.ServicoRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -56,7 +57,7 @@ public class FinanceiroController {
             nomesServicos.put(s.getSrvCodigo(), s.getSrvNome());
         }
 
-        List<Financeiro> financeiros = repo.findTop15ByOrderByFinDataPagtoDesc();
+        List<Financeiro> financeiros = repo.findTop15ByOrderByFinDataPagtoDescFinCodigoDesc();
 
         // Carrega todos os agendamentos referenciados de uma vez (evita N+1)
         List<Integer> agdCodigos = financeiros.stream()
@@ -129,12 +130,25 @@ public class FinanceiroController {
     }
 
     @PutMapping("/{id}/pagar")
+    @Transactional
     public ResponseEntity<Financeiro> marcarComoPago(@PathVariable Integer id) {
         Optional<Financeiro> f = repo.findById(id);
         if (f.isEmpty()) return ResponseEntity.notFound().build();
         Financeiro atual = f.get();
         atual.setFinStatus("Pago");
         atual.setFinDataPagto(LocalDate.now());
-        return ResponseEntity.ok(repo.save(atual));
+        Financeiro salvo = repo.save(atual);
+
+        // Reflete o pagamento na agenda: o atendimento correspondente passa a Concluido.
+        if (atual.getAgdCodigo() != null) {
+            agendamentoRepo.findById(atual.getAgdCodigo()).ifPresent(agd -> {
+                if (!"Cancelado".equalsIgnoreCase(agd.getAgdStatus())) {
+                    agd.setAgdStatus("Concluido");
+                    agendamentoRepo.save(agd);
+                }
+            });
+        }
+
+        return ResponseEntity.ok(salvo);
     }
 }

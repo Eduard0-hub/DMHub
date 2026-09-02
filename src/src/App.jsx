@@ -1,5 +1,4 @@
 import BarberCadLog from './components/Cadastro-Login-Barber.jsx'
-import AgendamentoBarbeiro from './components/AgendamentoBarbeiro.jsx'
 import AgendamentoCliente from './components/AgendamentoCliente.jsx'
 import VisualizacaoBarbeiro from "./components/VisualizacaoBarbeiro.jsx";
 import GestaoFinanceira from "./components/GestaoFinanceira.jsx";
@@ -20,7 +19,6 @@ function App() {
       {/* Tela inicial do cliente: agendamento simples, sem exigir login */}
       <Route path="/" element={<AgendamentoCliente />} />
       <Route path="/agendamento-cliente" element={<AgendamentoCliente />} />
-      <Route path="/agendamento-barbeiro" element={<PrivateRoute><AgendamentoBarbeiro /></PrivateRoute>} />
       <Route path="/visualizacao-barbeiro" element={<PrivateRoute><VisualizacaoBarbeiro /></PrivateRoute>} />
       <Route path="/gestao-financeira" element={<PrivateRoute><GestaoFinanceira /></PrivateRoute>} />
       <Route path="/avaliacao-cliente" element={<PrivateRoute><AvaliacaoCliente /></PrivateRoute>} />

@@ -156,6 +156,12 @@ public class AgendamentoController {
                 fin.setFinDataPagto(LocalDate.now());
                 financeiroRepo.save(fin);
             });
+        } else if ("Cancelado".equalsIgnoreCase(novoStatus)) {
+            // Atendimento cancelado nao deve gerar cobranca pendente no financeiro.
+            financeiroRepo.findByAgdCodigo(id).forEach(fin -> {
+                fin.setFinStatus("Cancelado");
+                financeiroRepo.save(fin);
+            });
         }
 
         return ResponseEntity.ok(atual);

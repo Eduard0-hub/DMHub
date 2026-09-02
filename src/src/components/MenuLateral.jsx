@@ -19,8 +19,7 @@ import {
 const itens = [
   { rota: '/', icone: House, rotulo: 'Home', tipos: ['cliente', 'barbeiro'] },
   { rota: '/agendamento-cliente', icone: CalendarDays, rotulo: 'Agendar', tipos: ['cliente'] },
-  { rota: '/agendamento-barbeiro', icone: CalendarDays, rotulo: 'Agenda', tipos: ['barbeiro'] },
-  { rota: '/visualizacao-barbeiro', icone: Users, rotulo: 'Clientes', tipos: ['barbeiro'] },
+  { rota: '/visualizacao-barbeiro', icone: Users, rotulo: 'Agenda', tipos: ['barbeiro'] },
   { rota: '/avaliacao-cliente', icone: Star, rotulo: 'Avaliar', tipos: ['cliente'] },
   { rota: '/avaliacao-barbeiro', icone: Star, rotulo: 'Avaliações', tipos: ['barbeiro'] },
   { rota: '/estoque', icone: Boxes, rotulo: 'Estoque', tipos: ['barbeiro'] },

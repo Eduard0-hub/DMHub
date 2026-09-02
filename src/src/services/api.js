@@ -113,7 +113,7 @@ export const materialApi = {
 };
 
 export const authApi = {
-  login: (email, senha) => enviar("/auth/login", { email, senha }),
+  login: (login, senha) => enviar("/auth/login", { login, senha }),
 };
 
 export const configuracaoAgendaApi = {

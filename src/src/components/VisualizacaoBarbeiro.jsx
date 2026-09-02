@@ -2,11 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import "./VisualizacaoBarbeiro.css";
-import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import MenuLateral from "./MenuLateral";
-import { CalendarDays, RefreshCcw, ArrowLeft, Info, Check, X } from "lucide-react";
+import { CalendarDays, RefreshCcw, Info, Check, X } from "lucide-react";
 import { agendamentoApi, servicoApi, clienteApi, barbeiroApi } from "../services/api.js";
 
 const normalizarData = (data) => {
@@ -97,8 +96,6 @@ const VisualizacaoBarbeiro = () => {
     [todosAgendamentos]
   );
 
-  const navigate = useNavigate();
-
   return (
     <>
       <Header />
@@ -106,14 +103,6 @@ const VisualizacaoBarbeiro = () => {
         <MenuLateral />
         <main className="visualizacao-main">
           <div className="top-menu">
-            <button
-              className="menu-link"
-              onClick={() => navigate("/agendamento-barbeiro")}
-            >
-              <Info size={14} />
-              Definir Horários de Atendimento
-            </button>
-
             <button className="menu-link active-link">
               <CalendarDays size={14} />
               Visualizar Agenda do Dia
@@ -262,14 +251,6 @@ const VisualizacaoBarbeiro = () => {
               Data selecionada: {dataFormatada}
             </span>
           </section>
-
-          <button
-            className="back-button"
-            onClick={() => navigate("/agendamento-barbeiro")}
-          >
-            <ArrowLeft size={16} />
-            Voltar
-          </button>
         </main>
       </div>
       <Footer />

@@ -3,10 +3,12 @@ package com.barberhub.controller;
 import com.barberhub.entity.Cliente;
 import com.barberhub.repository.ClienteRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -14,9 +16,11 @@ import java.util.Optional;
 public class ClienteController {
 
     private final ClienteRepository repo;
+    private final PasswordEncoder passwordEncoder;
 
-    public ClienteController(ClienteRepository repo) {
+    public ClienteController(ClienteRepository repo, PasswordEncoder passwordEncoder) {
         this.repo = repo;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -39,10 +43,16 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<Cliente> criar(@RequestBody Cliente cliente) {
+    public ResponseEntity<?> criar(@RequestBody Cliente cliente) {
+        boolean semEmail = cliente.getCliEmail() == null || cliente.getCliEmail().isBlank();
+        boolean semTelefone = cliente.getCliTelefone() == null || cliente.getCliTelefone().isBlank();
+        if (semEmail && semTelefone || cliente.getCliSenha() == null || cliente.getCliSenha().isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("erro", "Informe email ou telefone e senha"));
+        }
         if (cliente.getCliCriado() == null) {
             cliente.setCliCriado(LocalDateTime.now());
         }
+        cliente.setCliSenha(passwordEncoder.encode(cliente.getCliSenha()));
         Cliente salvo = repo.save(cliente);
         return ResponseEntity.ok(salvo);
     }
@@ -57,7 +67,7 @@ public class ClienteController {
         if (dados.getCliEmail() != null) atual.setCliEmail(dados.getCliEmail());
         if (dados.getCliTelefone() != null) atual.setCliTelefone(dados.getCliTelefone());
         if (dados.getCliSenha() != null && !dados.getCliSenha().isBlank()) {
-            atual.setCliSenha(dados.getCliSenha());
+            atual.setCliSenha(passwordEncoder.encode(dados.getCliSenha()));
         }
         return ResponseEntity.ok(repo.save(atual));
     }

@@ -188,6 +188,11 @@
   background: #eef2ff;
 }
 
+.cancelado {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
 .table-footer {
   padding: 18px;
   border-top: 1px solid #ececec;

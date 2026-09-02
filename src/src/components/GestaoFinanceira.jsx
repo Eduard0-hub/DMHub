@@ -54,16 +54,20 @@ const GestaoFinanceira = () => {
 
   const carregar = () => {
     setAtualizando(true);
-    return Promise.all([
+    return Promise.allSettled([
       financeiroApi.resumo(),
       financeiroApi.recentes(),
       kpiApi.faturamentoPorDia(periodo),
     ])
       .then(([r, a, g]) => {
-        setResumo(r);
-        setAtendimentos(a);
-        setGrafico(g);
-        setOrigem("banco");
+        // Aplica cada resultado individualmente para nao perder atualizacoes
+        // quando apenas uma das chamadas falha (ex.: grafico indisponivel).
+        if (r.status === "fulfilled") setResumo(r.value);
+        if (a.status === "fulfilled") setAtendimentos(a.value);
+        if (g.status === "fulfilled") setGrafico(g.value);
+        setOrigem(
+          r.status === "fulfilled" && a.status === "fulfilled" ? "banco" : "exemplo"
+        );
       })
       .catch(() => {
         setOrigem("exemplo");
@@ -224,6 +228,7 @@ const GestaoFinanceira = () => {
                       <option value="todos">Todos</option>
                       <option value="Pago">Pagos</option>
                       <option value="Pendente">Pendentes</option>
+                      <option value="Cancelado">Cancelados</option>
                     </select>
                   </div>
 
@@ -263,14 +268,22 @@ const GestaoFinanceira = () => {
                       <td>
                         <span
                           className={`status ${
-                            item.finStatus === "Pago" ? "done" : "scheduled"
+                            item.finStatus === "Pago"
+                              ? "done"
+                              : item.finStatus === "Cancelado"
+                              ? "cancelado"
+                              : "scheduled"
                           }`}
                         >
                           {item.finStatus || item.statusAgendamento}
                         </span>
                       </td>
                       <td>
-                        {item.finStatus !== "Pago" ? (
+                        {item.finStatus === "Pago" ? (
+                          <span className="status done">Pago</span>
+                        ) : item.finStatus === "Cancelado" ? (
+                          <span className="status cancelado">Cancelado</span>
+                        ) : (
                           <button
                             className="botao-marcar-pago"
                             onClick={() => marcarPago(item.finCodigo)}
@@ -278,8 +291,6 @@ const GestaoFinanceira = () => {
                             <Check size={14} />
                             Marcar como Pago
                           </button>
-                        ) : (
-                          <span className="status done">Pago</span>
                         )}
                       </td>
                     </tr>

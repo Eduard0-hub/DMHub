@@ -35,7 +35,7 @@ public interface FinanceiroRepository extends JpaRepository<Financeiro, Integer>
             "GROUP BY f.finDataPagto ORDER BY f.finDataPagto")
     List<Object[]> faturamentoPorDia(@Param("inicio") LocalDate inicio, @Param("fim") LocalDate fim);
 
-    List<Financeiro> findTop15ByOrderByFinDataPagtoDesc();
+    List<Financeiro> findTop15ByOrderByFinDataPagtoDescFinCodigoDesc();
 
     @Query("SELECT COUNT(f) FROM Financeiro f WHERE f.finStatus = :status")
     long countPorStatus(String status);

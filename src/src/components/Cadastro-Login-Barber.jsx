@@ -19,20 +19,20 @@ const Header = () => (
 
 const LoginScreen = ({ onCadastro }) => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [login, setLogin] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
 
   const fazerLogin = async () => {
     setErro("");
-    if (!email || !senha) {
-      setErro("Preencha email e senha");
+    if (!login || !senha) {
+      setErro("Preencha email ou telefone e senha");
       return;
     }
     setCarregando(true);
     try {
-      const cliente = await authApi.login(email, senha);
+      const cliente = await authApi.login(login, senha);
       localStorage.setItem("usuarioLogado", JSON.stringify(cliente));
       navigate("/");
     } catch (e) {
@@ -55,15 +55,15 @@ const LoginScreen = ({ onCadastro }) => {
         <p className="page-subtitle">Preencha os dados abaixo para fazer login.</p>
 
         <div className="form-group">
-          <label className="form-label">E-mail</label>
+          <label className="form-label">E-mail ou telefone</label>
           <div className="input-wrap">
             <MailIcon size={14} className="input-icon" />
             <input
               className="form-input"
-              type="email"
-              placeholder="joao@exemplo.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              placeholder="joao@exemplo.com ou (31) 99999-9999"
+              value={login}
+              onChange={(e) => setLogin(e.target.value)}
             />
           </div>
         </div>
@@ -115,8 +115,8 @@ const RegisterScreen = ({ onCancelar, aoCriar }) => {
   const cadastrar = async () => {
     setErro("");
 
-    if (!nome || !email || !telefone) {
-      setErro("Preencha nome, email e telefone");
+    if (!nome || (!email && !telefone)) {
+      setErro("Preencha nome e ao menos um dos dois: email ou telefone");
       return;
     }
 
@@ -129,8 +129,8 @@ const RegisterScreen = ({ onCancelar, aoCriar }) => {
       return;
     }
 
-    const numeroTelefone = apenasNumeros(telefone);
-    if (numeroTelefone.length < 10) {
+    const numeroTelefone = telefone ? apenasNumeros(telefone) : "";
+    if (telefone && numeroTelefone.length < 10) {
       setErro("Telefone incompleto");
       return;
     }
@@ -140,15 +140,15 @@ const RegisterScreen = ({ onCancelar, aoCriar }) => {
       if (tipo === "cliente") {
         await clienteApi.criar({
           cliNome: nome,
-          cliEmail: email,
-          cliTelefone: numeroTelefone,
+          cliEmail: email || null,
+          cliTelefone: numeroTelefone || null,
           cliSenha: senha,
         });
       } else {
         await barbeiroApi.criar({
           barNome: nome,
-          barEmail: email,
-          barTelefone: numeroTelefone,
+          barEmail: email || null,
+          barTelefone: numeroTelefone || null,
           barEspecialidade: especialidade || "Geral",
           barSenha: senha,
           barAtivo: true,
@@ -201,7 +201,7 @@ const RegisterScreen = ({ onCancelar, aoCriar }) => {
         </div>
 
         <div className="form-group">
-          <label className="form-label">E-mail</label>
+          <label className="form-label">E-mail*</label>
           <div className="input-wrap">
             <MailIcon className="input-icon" />
             <input
@@ -215,7 +215,7 @@ const RegisterScreen = ({ onCancelar, aoCriar }) => {
         </div>
 
         <div className="form-group">
-          <label className="form-label">Telefone</label>
+          <label className="form-label">Telefone*</label>
           <div className="input-wrap">
             <Phone className="input-icon" />
             <input
