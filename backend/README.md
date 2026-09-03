@@ -33,13 +33,13 @@ Dentro da pasta `backend`:
 mvn spring-boot:run
 ```
 
-A API sobe na porta 8080. Para testar, abra no navegador:
+A API sobe na porta 8081. Para testar, abra no navegador:
 
-- http://localhost:8080/api/kpi/resumo
-- http://localhost:8080/api/kpi/faturamento-por-dia
-- http://localhost:8080/api/kpi/atendimentos-por-barbeiro
-- http://localhost:8080/api/kpi/servicos-mais-vendidos
-- http://localhost:8080/api/kpi/ocupacao-barbeiros
+- http://localhost:8081/api/kpi/resumo
+- http://localhost:8081/api/kpi/faturamento-por-dia
+- http://localhost:8081/api/kpi/atendimentos-por-barbeiro
+- http://localhost:8081/api/kpi/servicos-mais-vendidos
+- http://localhost:8081/api/kpi/ocupacao-barbeiros
 
 ### Estrutura
 
@@ -78,7 +78,7 @@ backend/
 ### Fluxo da requisição
 
 ```
-React (porta 5173) -> Spring Boot (porta 8080) -> MySQL (porta 3306)
+React (porta 5173) -> Spring Boot (porta 8081) -> MySQL (porta 3306)
 ```
 
 O React faz `fetch` nos endpoints `/api/kpi/*`, o Spring Boot consulta o banco usando JPA e devolve os dados em JSON. Se o backend estiver desligado, a tela de Indicadores mostra valores de exemplo com um aviso.

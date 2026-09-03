@@ -65,6 +65,7 @@ const inicioDoDia = () => {
 
 const AgendamentoCliente = () => {
   const [servicos, setServicos] = useState(servicosFallback);
+  const [servicosReais, setServicosReais] = useState(false);
   const [barbeiros, setBarbeiros] = useState([]);
   const [etapaAtual, setEtapaAtual] = useState(1);
   const [servicoSelecionado, setServicoSelecionado] = useState(servicosFallback[0]);
@@ -86,6 +87,7 @@ const AgendamentoCliente = () => {
         if (dados.length) {
           setServicos(dados);
           setServicoSelecionado(dados[0]);
+          setServicosReais(true);
         }
       })
       .catch(() => {});
@@ -178,6 +180,10 @@ const AgendamentoCliente = () => {
 
     if (!servicoSelecionado) {
       setErro('Selecione um serviço');
+      return;
+    }
+    if (!servicosReais) {
+      setErro('Nenhum serviço cadastrado no momento. Contate o estabelecimento.');
       return;
     }
     if (!diaSelecionado || !horarioSelecionado) {

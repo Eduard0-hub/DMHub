@@ -109,6 +109,9 @@ const RegisterScreen = ({ onCancelar, aoCriar }) => {
   const [senha, setSenha] = useState("");
   const [confirmar, setConfirmar] = useState("");
   const [especialidade, setEspecialidade] = useState("");
+  const [aceitouTermos, setAceitouTermos] = useState(false);
+  const [aceitouPrivacidade, setAceitouPrivacidade] = useState(false);
+  const [modalLegal, setModalLegal] = useState(null);
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
 
@@ -126,6 +129,10 @@ const RegisterScreen = ({ onCancelar, aoCriar }) => {
     }
     if (senha !== confirmar) {
       setErro("As senhas nao conferem");
+      return;
+    }
+    if (!aceitouTermos || !aceitouPrivacidade) {
+      setErro("Você precisa aceitar os Termos de Uso e o Aviso de Privacidade para concluir o cadastro.");
       return;
     }
 
@@ -273,6 +280,67 @@ const RegisterScreen = ({ onCancelar, aoCriar }) => {
             />
           </div>
         </div>
+
+        <div className="legal-box">
+          <h2 className="legal-title">Termos e privacidade</h2>
+          <p className="legal-intro">Antes de concluir, leia os documentos abaixo:</p>
+
+          <div className="legal-links">
+            <button type="button" className="legal-link-button" onClick={() => setModalLegal("termos")}>
+              Termos de Uso
+            </button>
+            <span>e</span>
+            <button type="button" className="legal-link-button" onClick={() => setModalLegal("privacidade")}>
+              Aviso de Privacidade
+            </button>
+          </div>
+
+          <label className="checkbox-row">
+            <input
+              type="checkbox"
+              checked={aceitouTermos}
+              onChange={(e) => setAceitouTermos(e.target.checked)}
+            />
+            <span>Li e concordo com os Termos de Uso.</span>
+          </label>
+
+          <label className="checkbox-row">
+            <input
+              type="checkbox"
+              checked={aceitouPrivacidade}
+              onChange={(e) => setAceitouPrivacidade(e.target.checked)}
+            />
+            <span>Li e concordo com o Aviso de Privacidade.</span>
+          </label>
+        </div>
+
+        {modalLegal && (
+          <div className="legal-modal-backdrop" onClick={() => setModalLegal(null)}>
+            <div className="legal-modal" onClick={(e) => e.stopPropagation()}>
+              <div className="legal-modal-header">
+                <h3>{modalLegal === "termos" ? "Termos de Uso" : "Aviso de Privacidade"}</h3>
+                <button type="button" className="legal-modal-close" onClick={() => setModalLegal(null)}>
+                  Fechar
+                </button>
+              </div>
+              <div className="legal-modal-body">
+                {modalLegal === "termos" ? (
+                  <>
+                    <p>Ao criar uma conta no Barber Hub, o usuário declara que as informações fornecidas são verdadeiras e que se compromete a utilizar a plataforma de forma responsável, respeitando as regras de agendamento, comunicação e atendimento.</p>
+                    <p>O usuário concorda que o uso do sistema é exclusivo para fins legítimos, e que deve manter seus dados de acesso em sigilo, não compartilhando credenciais com terceiros.</p>
+                    <p>O Barber Hub pode utilizar os dados informados para autenticação, gestão de agendamentos, comunicação essencial, suporte ao cliente e melhoria da experiência do serviço.</p>
+                  </>
+                ) : (
+                  <>
+                    <p>O Barber Hub coleta e trata dados pessoais, como nome, e-mail, telefone, informações de agendamento e dados de acesso, para permitir o cadastro, a autenticação, a gestão do serviço, o atendimento e a comunicação necessária.</p>
+                    <p>Esses dados poderão ser armazenados em ambiente seguro, acessados apenas por pessoas autorizadas e utilizados para as finalidades do sistema, incluindo suporte, segurança, operação e melhoria da experiência do usuário.</p>
+                    <p>O tratamento dos dados é realizado com base no consentimento do titular e na execução do serviço solicitado, em conformidade com a Lei Geral de Proteção de Dados (LGPD). O usuário pode solicitar acesso, correção, atualização, limitação ou exclusão dos seus dados pelo e-mail suporte@barberhub.com.</p>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
         {erro && <p className="form-erro">{erro}</p>}
       </div>

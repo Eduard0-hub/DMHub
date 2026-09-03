@@ -2,6 +2,8 @@
 setlocal
 title BarberHub - Inicializador
 
+net start MySQL80
+
 set "ROOT=%~dp0"
 set "JDK_HOME=C:\Program Files\Java\jdk-17"
 
@@ -27,7 +29,7 @@ if not exist "%JDK_HOME%\bin\java.exe" (
 
 set "JAVA_HOME=%JDK_HOME%"
 
-echo Iniciando o backend em http://localhost:8080...
+echo Iniciando o backend em http://localhost:8081...
 start "BarberHub - Backend" cmd /k "cd /d ""%ROOT%backend"" && call mvnw.cmd spring-boot:run"
 
 echo Iniciando o frontend em http://localhost:5173...

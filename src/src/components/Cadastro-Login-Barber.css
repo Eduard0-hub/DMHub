@@ -180,6 +180,126 @@
     margin-top: 5px;
   }
 
+  .legal-box {
+    margin-top: 8px;
+    padding: 14px 12px;
+    border: 1px solid var(--border);
+    background: #F7F5F2;
+    border-radius: var(--radius-sm);
+  }
+
+  .legal-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+
+  .legal-intro {
+    font-size: 11.5px;
+    color: var(--ink-muted);
+    margin-bottom: 10px;
+  }
+
+  .legal-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    color: var(--ink-muted);
+  }
+
+  .legal-link-button {
+    border: none;
+    background: transparent;
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+  }
+
+  .checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 12.5px;
+    color: var(--ink);
+    line-height: 1.5;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+
+  .checkbox-row input {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .legal-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 26, 26, 0.52);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 100;
+  }
+
+  .legal-modal {
+    width: min(560px, 100%);
+    max-height: 80vh;
+    overflow: hidden;
+    background: var(--card);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+  }
+
+  .legal-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .legal-modal-header h3 {
+    font-size: 18px;
+    color: var(--ink);
+    font-family: 'DM Serif Display', serif;
+  }
+
+  .legal-modal-close {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--ink);
+    border-radius: 8px;
+    padding: 8px 10px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+  }
+
+  .legal-modal-body {
+    padding: 18px 20px 22px;
+    max-height: 60vh;
+    overflow-y: auto;
+    color: var(--ink-muted);
+    font-size: 13px;
+    line-height: 1.7;
+    display: grid;
+    gap: 12px;
+  }
+
   .link-visitante {
     display: block;
     width: 100%;

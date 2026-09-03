@@ -6,6 +6,7 @@ import com.barberhub.entity.Servico;
 import com.barberhub.repository.AgendamentoRepository;
 import com.barberhub.repository.FinanceiroRepository;
 import com.barberhub.repository.ServicoRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,12 +87,23 @@ public class AgendamentoController {
                     .body(Map.of("erro", "Este horario ja esta ocupado para o barbeiro selecionado"));
         }
 
+        if (agendamento.getSrvCodigo() != null && !servicoRepo.existsById(agendamento.getSrvCodigo())) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("erro", "Servico selecionado nao existe"));
+        }
+
         if (agendamento.getAgdPreco() == null && agendamento.getSrvCodigo() != null) {
             Optional<Servico> servico = servicoRepo.findById(agendamento.getSrvCodigo());
             servico.ifPresent(s -> agendamento.setAgdPreco(s.getSrvPreco()));
         }
 
-        Agendamento salvo = repo.save(agendamento);
+        Agendamento salvo;
+        try {
+            salvo = repo.save(agendamento);
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("erro", "Dados invalidos para o agendamento (barbeiro, servico ou cliente inexistente)"));
+        }
 
         Financeiro fin = new Financeiro();
         fin.setAgdCodigo(salvo.getAgdCodigo());
