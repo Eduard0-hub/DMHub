@@ -42,7 +42,7 @@ echo Iniciando o backend em http://localhost:8081...
 start "BarberHub - Backend" cmd /k "cd /d ""%ROOT%backend"" && mvn spring-boot:run"
 
 echo Iniciando o frontend em http://localhost:5173...
-start "BarberHub - Frontend" cmd /k "cd /d ""%ROOT%src"" && npm ci && npm run dev"
+start "BarberHub - Frontend" cmd /k "cd /d ""%ROOT%src"" && npm install && npm run dev"
 
 powershell -NoProfile -ExecutionPolicy Bypass -Command "$deadline = (Get-Date).AddSeconds(90); while ((Get-Date) -lt $deadline) { if (Test-NetConnection -ComputerName 'localhost' -Port 5173 -InformationLevel Quiet -WarningAction SilentlyContinue) { Start-Process 'http://localhost:5173'; exit 0 }; Start-Sleep -Milliseconds 500 }; Write-Host 'O frontend nao iniciou em 90 segundos.'"
 

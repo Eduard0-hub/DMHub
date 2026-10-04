@@ -54,7 +54,23 @@ O BarberHub é uma solução digital de gestão desenhada para unificar a jornad
 
 ## Instruções de utilização
 
-### Pré-requisitos
+### Docker
+
+A forma mais simples de executar o projeto localmente e com Docker. A composicao inicia o frontend, a API e um banco MariaDB, criando automaticamente o banco `db_barbearia` a partir de `src/db/schema.sql`.
+
+```bash
+docker compose up --build
+```
+
+Depois da inicializacao, acesse `http://localhost:5173`. A API fica disponivel em `http://localhost:8081` e o MariaDB nao precisa ser instalado na maquina host.
+
+Para encerrar os containers, pressione `Ctrl+C`. Para remover tambem os dados locais do banco e recomecar do zero, execute:
+
+```bash
+docker compose down -v
+```
+
+### Execucao manual: pre-requisitos
 
 * Node.js 20.19.0 ou superior e npm para o frontend.
 * Java 17 e Maven para o backend.
