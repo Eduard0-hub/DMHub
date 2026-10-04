@@ -22,9 +22,62 @@ O BarberHub é uma solução digital de gestão desenhada para unificar a jornad
 
 * Cleia Marcia Gomes Amaral
 
+## Stack utilizada
+
+### Frontend
+
+* React 19
+* Vite 8
+* React Router DOM 7
+* ApexCharts e React ApexCharts
+* React Day Picker
+* Swiper
+* Lucide React
+* date-fns
+* ESLint
+
+### Backend
+
+* Java 17
+* Spring Boot 3.2.5
+* Spring Web
+* Spring Data JPA e Hibernate
+* Spring Security Crypto
+* MySQL Connector/J
+* Maven
+* JUnit e Spring Boot Test
+
+### Deploy
+
+* Vercel para o frontend
+* Railway para o backend
+
 ## Instruções de utilização
 
-Assim que a primeira versão do sistema estiver disponível, deverá complementar com as instruções de utilização. Descreva como instalar eventuais dependências e como executar a aplicação.
+### Pré-requisitos
+
+* Node.js 20.19.0 ou superior e npm para o frontend.
+* Java 17 e Maven para o backend.
+* Uma instância MySQL configurada para executar a API.
+
+### Frontend
+
+```bash
+cd src
+npm ci
+npm run dev
+```
+
+Para gerar a versão de produção, execute `npm run build`.
+
+### Backend
+
+```bash
+cd backend
+mvn spring-boot:run
+```
+
+As dependências Maven são resolvidas automaticamente na primeira execução.
 
 # Documentação
 
@@ -57,4 +110,3 @@ Assim que a primeira versão do sistema estiver disponível, deverá complementa
     * Implementação da funcionalidade X pertencente ao processo P.
 * 0.0.1
     * Trabalhando na modelagem do processo de negócio.
-
