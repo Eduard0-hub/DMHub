@@ -56,13 +56,27 @@ O BarberHub é uma solução digital de gestão desenhada para unificar a jornad
 
 ### Docker
 
-A forma mais simples de executar o projeto localmente e com Docker. A composicao inicia o frontend, a API e um banco MariaDB, criando automaticamente o banco `db_barbearia` a partir de `src/db/schema.sql`.
+A forma mais simples de executar o projeto localmente e com Docker. A composição inicia o frontend, a API e um banco MariaDB, criando automaticamente o banco a partir de `src/db/schema.sql`. O Dockerfile do backend separa a compilação do runtime, aproveita o cache das dependências Maven e executa a API com um usuário sem privilégios. A API e o frontend têm verificações de saúde e só ficam disponíveis quando os serviços necessários estão prontos.
+
+Crie o arquivo local de configuração a partir do exemplo:
+
+```bash
+cp .env.example .env
+```
+
+Os valores do exemplo são apenas para desenvolvimento local. Não use essas credenciais em produção; configure os valores por meio do gerenciador de secrets do ambiente de deploy.
 
 ```bash
 docker compose up --build
 ```
 
-Depois da inicializacao, acesse `http://localhost:5173`. A API fica disponivel em `http://localhost:8081` e o MariaDB nao precisa ser instalado na maquina host.
+Depois da inicialização, acesse `http://localhost:5173`. A API fica disponível em `http://localhost:8081` e o MariaDB não precisa ser instalado na máquina host. As portas podem ser alteradas com `FRONTEND_PORT` e `BACKEND_PORT` no `.env`.
+
+Para construir somente a imagem do backend, execute o comando a partir da raiz do repositório, pois o Dockerfile copia arquivos de `backend/` usando esse contexto:
+
+```bash
+docker build -f backend/Dockerfile -t barberhub-backend:local .
+```
 
 Para encerrar os containers, pressione `Ctrl+C`. Para remover tambem os dados locais do banco e recomecar do zero, execute:
 
