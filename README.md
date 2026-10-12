@@ -11,6 +11,8 @@ Trabalho Interdisciplinar: Aplicações para Processos de Negócios
 
 O BarberHub é uma solução digital de gestão desenhada para unificar a jornada da barbearia. Através de uma interface web intuitiva, o projeto otimiza o fluxo entre o agendamento do cliente, a rotina operacional do barbeiro e o controle financeiro do gestor. Utilizando modelagem de processos (BPMN), a ferramenta substitui o uso de múltiplas plataformas por um sistema centralizado que organiza desde o estoque até o faturamento, elevando a eficiência do negócio e a fidelização do cliente.
 
+Este fork dá continuidade ao projeto original BarberHub. Seu objetivo é aprimorar a solução e demonstrar minha capacidade de desenvolver novas funcionalidades e evoluir o sistema.
+
 ## Funcionalidades
 
 * Agendamento de serviços e consulta de disponibilidade.
@@ -104,6 +106,22 @@ Para encerrar os containers, pressione `Ctrl+C`. Para remover também os dados l
 
 ```bash
 docker compose down -v
+```
+
+### Scripts de inicialização (sem Docker)
+
+Os scripts iniciam o backend e o frontend em janelas ou processos separados, mas não iniciam nem criam o banco de dados. Antes de usá-los, prepare o MySQL/MariaDB, aplique `src/db/schema.sql` e configure as variáveis de conexão descritas em Execução manual.
+
+No Windows, execute:
+
+```powershell
+.\iniciar-projeto.bat
+```
+
+No Linux ou macOS, execute:
+
+```bash
+./iniciar-projeto.sh
 ```
 
 ### Execução manual: pré-requisitos
