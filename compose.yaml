@@ -2,10 +2,10 @@ services:
   database:
     image: mariadb:11.4
     environment:
-      MARIADB_DATABASE: db_barbearia
-      MARIADB_USER: barberhub
-      MARIADB_PASSWORD: barberhub
-      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: ${MARIADB_DATABASE:?Set MARIADB_DATABASE in .env}
+      MARIADB_USER: ${MARIADB_USER:?Set MARIADB_USER in .env}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD:?Set MARIADB_PASSWORD in .env}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:?Set MARIADB_ROOT_PASSWORD in .env}
     volumes:
       - mariadb-data:/var/lib/mysql
       - ./src/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
@@ -23,23 +23,36 @@ services:
     environment:
       MYSQLHOST: database
       MYSQLPORT: 3306
-      MYSQLDATABASE: db_barbearia
-      MYSQLUSER: barberhub
-      MYSQLPASSWORD: barberhub
+      MYSQLDATABASE: ${MARIADB_DATABASE:?Set MARIADB_DATABASE in .env}
+      MYSQLUSER: ${MARIADB_USER:?Set MARIADB_USER in .env}
+      MYSQLPASSWORD: ${MARIADB_PASSWORD:?Set MARIADB_PASSWORD in .env}
     depends_on:
       database:
         condition: service_healthy
     ports:
-      - "8081:8081"
+      - "${BACKEND_PORT:-8081}:8081"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1:8081/actuator/health/readiness"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
 
   frontend:
     build:
       context: ./src
       dockerfile: Dockerfile
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     ports:
-      - "5173:80"
+      - "${FRONTEND_PORT:-5173}:80"
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--spider", "http://127.0.0.1/"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
 
 volumes:
   mariadb-data:

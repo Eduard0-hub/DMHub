@@ -4,6 +4,7 @@
 .claude/
 .vscode/
 .idea/
+.env
 
 # Artefatos locais / execução
 backend-log.txt

@@ -1,0 +1,28 @@
+name: Docker Compose
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-smoke-test:
+    runs-on: ubuntu-latest
+    env:
+      MARIADB_DATABASE: db_barbearia
+      MARIADB_USER: barberhub
+      MARIADB_PASSWORD: ci-database-password
+      MARIADB_ROOT_PASSWORD: ci-root-password
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and start services
+        run: docker compose up --build --detach --wait --wait-timeout 180
+
+      - name: Smoke test frontend and API
+        run: |
+          curl --fail --retry 5 --retry-connrefused http://localhost:5173/
+          curl --fail --retry 5 --retry-connrefused http://localhost:8081/actuator/health/readiness
+
+      - name: Stop services
+        if: always()
+        run: docker compose down --volumes
