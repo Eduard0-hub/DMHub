@@ -132,23 +132,17 @@ $env:MYSQLUSER = "root"
 $env:MYSQLPASSWORD = "sua-senha"
 ```
 
-No Bash, use `export` para definir as mesmas variáveis. Elas são lidas por `application.properties`.
-
-### Frontend
+No Bash, defina as mesmas variáveis com `export`:
 
 ```bash
-cd src
-npm ci
-npm run dev
+export MYSQLHOST=localhost
+export MYSQLPORT=3306
+export MYSQLDATABASE=db_barbearia
+export MYSQLUSER=root
+export MYSQLPASSWORD=sua-senha
 ```
 
-Por padrão, o frontend usa `/api`, caminho que o Docker encaminha para o backend. Na execução manual, configure `VITE_API_URL` para apontar à API local. Uma opção é criar `src/.env.local` com este conteúdo antes de iniciar o Vite:
-
-```dotenv
-VITE_API_URL=http://localhost:8081/api
-```
-
-Para gerar a versão de produção, execute `npm run build`.
+Essas variáveis são lidas por `application.properties`.
 
 ### Backend
 
@@ -157,7 +151,25 @@ cd backend
 mvn spring-boot:run
 ```
 
-As dependências Maven são resolvidas automaticamente na primeira execução.
+As dependências Maven são resolvidas automaticamente na primeira execução. A API inicia na porta `8081` por padrão; se definir a variável `PORT`, ela usará a porta informada. Mantenha o backend em execução enquanto inicia o frontend.
+
+### Frontend
+
+Na execução manual, configure `VITE_API_URL` para apontar à API local. Com a porta padrão, crie `src/.env.local` com:
+
+```dotenv
+VITE_API_URL=http://localhost:8081/api
+```
+
+Se tiver definido `PORT` para outro valor, substitua `8081` pela porta escolhida. Depois, em outro terminal:
+
+```bash
+cd src
+npm ci
+npm run dev
+```
+
+Por padrão, o frontend usa `/api`, caminho que o Docker encaminha para o backend. Para gerar a versão de produção, execute `npm run build`.
 
 ## Documentação
 
