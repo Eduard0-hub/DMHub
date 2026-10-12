@@ -11,7 +11,14 @@ Trabalho Interdisciplinar: Aplicações para Processos de Negócios
 
 O BarberHub é uma solução digital de gestão desenhada para unificar a jornada da barbearia. Através de uma interface web intuitiva, o projeto otimiza o fluxo entre o agendamento do cliente, a rotina operacional do barbeiro e o controle financeiro do gestor. Utilizando modelagem de processos (BPMN), a ferramenta substitui o uso de múltiplas plataformas por um sistema centralizado que organiza desde o estoque até o faturamento, elevando a eficiência do negócio e a fidelização do cliente.
 
-Este fork dá continuidade ao projeto original BarberHub. Seu objetivo é aprimorar a solução e demonstrar minha capacidade de desenvolver novas funcionalidades e evoluir o sistema.
+Este repositório dá continuidade ao [projeto original BarberHub](https://github.com/Eduard0-code/barberhub). O projeto-base foi desenvolvido pela equipe listada em Integrantes; as evoluções descritas abaixo foram implementadas por Eduardo Costa Silva neste fork.
+
+## Evoluções deste fork
+
+* Autenticação de clientes e barbeiros com senhas protegidas por hash BCrypt e login por e-mail ou telefone.
+* Verificação de disponibilidade e prevenção de conflitos de horário nos agendamentos, com atualização dos lançamentos financeiros conforme o status do atendimento.
+* Ambiente Docker Compose para frontend, backend e MariaDB, com verificações de saúde e integração contínua para testes Java e testes de fumaça.
+* Scripts de inicialização para Windows e Linux/macOS, além de documentação para execução manual.
 
 ## Funcionalidades
 
@@ -212,9 +219,11 @@ Por padrão, o frontend usa `/api`, caminho que o Docker encaminha para o backen
 
 ## Histórico de versões
 
+* 0.2.0
+    * Evoluções deste fork: autenticação BCrypt, validação de disponibilidade e conflitos de agenda, integração entre agendamentos e financeiro, Docker Compose, CI e scripts de inicialização.
 * 0.1.1
     * Atualização e organização da documentação do projeto.
 * 0.1.0
-    * Implementação do fluxo de agendamento, avaliações, gestão financeira, indicadores e controle de estoque.
+    * Versão-base herdada do projeto original: agendamento, avaliações, gestão financeira, indicadores e controle de estoque.
 * 0.0.1
     * Modelagem inicial dos processos de negócio da barbearia.
