@@ -82,7 +82,7 @@ docker compose ps
 docker compose logs --follow
 ```
 
-O endpoint `http://localhost:8081/actuator/health/readiness` informa se a API e sua conexão com o banco estão prontas. O workflow `.github/workflows/docker-compose.yml` também constrói o ambiente e executa testes de fumaça no frontend e na API a cada push e pull request.
+O endpoint `http://localhost:8081/actuator/health/readiness` informa se a API e sua conexão com o banco estão prontas. O workflow `.github/workflows/docker-compose.yml` executa os testes Java, constrói o ambiente e realiza testes de fumaça no frontend e na API a cada push e pull request.
 
 Para construir somente a imagem do backend, execute o comando a partir da raiz do repositório, pois o Dockerfile copia arquivos de `backend/` usando esse contexto:
 

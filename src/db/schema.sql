@@ -1,6 +1,3 @@
-CREATE DATABASE IF NOT EXISTS db_barbearia;
-USE db_barbearia;
-
 CREATE TABLE IF NOT EXISTS Clientes (
     CliCodigo INTEGER PRIMARY KEY AUTO_INCREMENT,
     CliNome VARCHAR(50),
