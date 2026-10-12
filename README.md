@@ -11,6 +11,14 @@ Trabalho Interdisciplinar: Aplicações para Processos de Negócios
 
 O BarberHub é uma solução digital de gestão desenhada para unificar a jornada da barbearia. Através de uma interface web intuitiva, o projeto otimiza o fluxo entre o agendamento do cliente, a rotina operacional do barbeiro e o controle financeiro do gestor. Utilizando modelagem de processos (BPMN), a ferramenta substitui o uso de múltiplas plataformas por um sistema centralizado que organiza desde o estoque até o faturamento, elevando a eficiência do negócio e a fidelização do cliente.
 
+## Funcionalidades
+
+* Agendamento de serviços e consulta de disponibilidade.
+* Acesso para clientes e barbeiros, com gestão da agenda e dos serviços.
+* Registro de avaliações dos atendimentos.
+* Controle financeiro e acompanhamento de indicadores.
+* Gestão de materiais, estoque e movimentações.
+
 ## Integrantes
 
 * Álan Christian de Araújo Lima
@@ -52,6 +60,8 @@ O BarberHub é uma solução digital de gestão desenhada para unificar a jornad
 * Vercel para o frontend
 * Railway para o backend
 
+Os endereços públicos do frontend e da API não estão registrados neste repositório.
+
 ## Instruções de utilização
 
 ### Docker
@@ -90,17 +100,39 @@ Para construir somente a imagem do backend, execute o comando a partir da raiz d
 docker build -f backend/Dockerfile -t barberhub-backend:local .
 ```
 
-Para encerrar os containers, pressione `Ctrl+C`. Para remover tambem os dados locais do banco e recomecar do zero, execute:
+Para encerrar os containers, pressione `Ctrl+C`. Para remover também os dados locais do banco e recomeçar do zero, execute:
 
 ```bash
 docker compose down -v
 ```
 
-### Execucao manual: pre-requisitos
+### Execução manual: pré-requisitos
 
 * Node.js 20.19.0 ou superior e npm para o frontend.
 * Java 17 e Maven para o backend.
-* Uma instância MySQL configurada para executar a API.
+* Uma instância MySQL ou MariaDB. O projeto usa MariaDB no Docker e o driver MySQL Connector/J na aplicação; o schema é compatível com ambos.
+
+Crie o banco e aplique o schema a partir da raiz do repositório. O exemplo abaixo funciona com o cliente `mysql` do MySQL ou do MariaDB:
+
+```sql
+CREATE DATABASE db_barbearia CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+```bash
+mysql -u root -p db_barbearia < src/db/schema.sql
+```
+
+Configure as variáveis de conexão do backend antes de iniciá-lo. Ajuste usuário e senha conforme sua instalação. No PowerShell:
+
+```powershell
+$env:MYSQLHOST = "localhost"
+$env:MYSQLPORT = "3306"
+$env:MYSQLDATABASE = "db_barbearia"
+$env:MYSQLUSER = "root"
+$env:MYSQLPASSWORD = "sua-senha"
+```
+
+No Bash, use `export` para definir as mesmas variáveis. Elas são lidas por `application.properties`.
 
 ### Frontend
 
@@ -108,6 +140,12 @@ docker compose down -v
 cd src
 npm ci
 npm run dev
+```
+
+Por padrão, o frontend usa `/api`, caminho que o Docker encaminha para o backend. Na execução manual, configure `VITE_API_URL` para apontar à API local. Uma opção é criar `src/.env.local` com este conteúdo antes de iniciar o Vite:
+
+```dotenv
+VITE_API_URL=http://localhost:8081/api
 ```
 
 Para gerar a versão de produção, execute `npm run build`.
@@ -121,34 +159,32 @@ mvn spring-boot:run
 
 As dependências Maven são resolvidas automaticamente na primeira execução.
 
-# Documentação
+## Documentação
 
-<ol>
-<li><a href="docs/1-Contexto.md"> Documentação de Contexto</a></li>
-<li><a href="docs/2-Especificação.md"> Especificação do Projeto</a></li>
-<li><a href="docs/3-Modelagem-Processos-Negócio.md"> Modelagem dos Processos de Negocio</a></li>
-<li><a href="docs/4-Projeto-Solucao.md"> Projeto da solução</a></li>
-<li><a href="docs/5-Planejamento-Projeto.md"> Planejamento do Projeto</a></li>
-<li><a href="docs/6-Interface-Sistema.md"> Interface do Sistema</a></li>
-<li><a href="docs/7-Indicadores.md"> Indicadores</a></li>
-<li><a href="docs/8-Conclusão.md"> Conclusão</a></li>
-<li><a href="docs/9-Referências.md"> Referências</a></li>
-</ol>
+1. [Documentação de Contexto](docs/1-Contexto.md)
+2. [Especificação do Projeto](docs/2-Especifica%C3%A7%C3%A3o.md)
+3. [Modelagem dos Processos de Negócio](docs/3-Modelagem-Processos-Neg%C3%B3cio.md)
+4. [Projeto da solução](docs/4-Projeto-Solucao.md)
+5. [Planejamento do Projeto](docs/5-Planejamento-Projeto.md)
+6. [Interface do Sistema](docs/6-Interface-Sistema.md)
+7. [Indicadores](docs/7-Indicadores.md)
+8. [Conclusão](docs/8-Conclus%C3%A3o.md)
+9. [Referências](docs/9-Refer%C3%AAncias.md)
 
-# Código
+## Código
 
-<li><a href="src/README.md"> Código Fonte</a></li>
+[Código-fonte](src/README.md)
 
-# Apresentação
+## Apresentação
 
-<li><a href="docs/apresentacao/README.md"> Apresentação da solução</a></li>
+[Apresentação da solução](docs/apresentacao/README.md)
 
 
 ## Histórico de versões
 
 * 0.1.1
-    * CHANGE: Atualização das documentações. Código permaneceu inalterado.
+    * Atualização e organização da documentação do projeto.
 * 0.1.0
-    * Implementação da funcionalidade X pertencente ao processo P.
+    * Implementação do fluxo de agendamento, avaliações, gestão financeira, indicadores e controle de estoque.
 * 0.0.1
-    * Trabalhando na modelagem do processo de negócio.
+    * Modelagem inicial dos processos de negócio da barbearia.
